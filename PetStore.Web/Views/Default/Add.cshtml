@@ -1,0 +1,13 @@
+﻿@model PetStore.Core.Domain.Pet
+
+<section class="my-3">
+    <h3><i class="bi bi-android"></i> Add new pet</h3>
+    @using (Html.BeginForm())
+    {
+        @Html.Partial("~/Views/Default/Form.cshtml", Model)
+        <div class="form-group my-2">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "Default", null)" class="btn btn-outline-primary">Cancel</a>
+        </div>
+    }
+</section>

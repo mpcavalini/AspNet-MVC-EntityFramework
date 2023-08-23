@@ -1,0 +1,33 @@
+﻿@using PetStore.Core.Domain;
+
+@if (TempData["Message"] != null)
+{
+    var msg = TempData["Message"] as Message;
+
+    if (!string.IsNullOrEmpty(msg.Text))
+    {
+        var css = "";
+        var icon = "";
+
+        switch (msg.Type)
+        {
+            case MessageType.Success:
+                css = "bg-success text-white";
+                icon = "<i class=\"bi bi-check-circle\"></i>";
+                break;
+            case MessageType.Warning:
+                css = "bg-warning";
+                icon = "<i class=\"bi bi-exclamation-triangle\"></i>";
+                break;
+            case MessageType.Error:
+                css = "bg-danger text-white";
+                icon = "<i class=\"bi bi-exclamation-octagon\"></i>";
+                break;
+
+        }
+        <div class="@css p-2 my-3">
+            <h4>@Html.Raw(icon) Message</h4>
+            <p>@Html.Raw(msg.Text)</p>
+        </div>
+    }
+}
