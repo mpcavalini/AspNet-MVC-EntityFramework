@@ -1,0 +1,14 @@
+﻿@model List<string> 
+
+<section class="my-3">
+    <h3>Log list</h3>
+    @if (Model.Any())
+    {
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>@Html.ActionLink(item, "DownloadFile", new { fileName = item })</li>
+            }
+        </ul>
+    }
+</section>
