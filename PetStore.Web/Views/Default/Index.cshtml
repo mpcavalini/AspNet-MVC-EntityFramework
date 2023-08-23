@@ -1,0 +1,107 @@
+﻿@model PagedList.IPagedList<PetStore.Core.Domain.Pet>
+@using PagedList.Mvc;
+
+
+<section class="my-3">
+    <p>
+        <a href="@Url.Action("Add", "Default", null)" class="btn btn-primary"><i class="bi bi-android"></i> Add new pet</a>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#filter"><i class="bi bi-funnel"></i> Filter</a>
+    </p>
+</section>
+
+<section class="my-5 p-3 bg-dark text-white collapse" id="filter">
+    <h3>Filter</h3>
+    @using (Html.BeginForm("Index","Default",FormMethod.Post, new { @class = "d-flex align-items-md-end gap-3 flex-column flex-md-row" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group my-2 flex-grow-1">
+            @Html.Label("Name", htmlAttributes: new { @class = "control-label" })
+            @Html.Editor("Name", new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group my-2">
+            @Html.Label("Type", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("Type", EnumHelper.GetSelectList(typeof(PetStore.Core.Domain.PetType)), "Select an option", new { @class = "form-select" })
+        </div>
+
+        <div class="form-group my-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    }
+</section>
+
+<section class="my-3">
+    <h3>Pet list</h3>
+    @if (Model.Any())
+    {
+    <table class="table table-striped table-hover">
+        <tr>
+            <th class="d-none d-sm-table-cell">Id</th>
+            <th>@Html.ActionLink("Name", "Index", new { sort = ViewBag.NameSort, filterName = ViewBag.FilterName, filterType = ViewBag.FilterType })</th>
+            <th>@Html.ActionLink("Date of Birth", "Index", new { sort = ViewBag.DateSort, filterName = ViewBag.FilterName, filterType = ViewBag.FilterType })</th>
+            <th class="d-none d-sm-table-cell">@Html.ActionLink("Weight", "Index", new { sort = ViewBag.WeightSort, filterName = ViewBag.FilterName, filterType = ViewBag.FilterType })</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="d-none d-sm-table-cell">@item.Id</td>
+                <td class="text-break">@item.Name</td>
+                <td class="text-break">@item.DateOfBirth.ToShortDateString()</td>
+                <td class="d-none d-sm-table-cell">@item.Weight</td>
+                <td>@item.Type</td>
+                <td class="d-flex gap-3 gap-md-1 flex-column flex-md-row">
+                    <a href="@Url.Action("Edit", "Default", new { id = item.Id })" class="btn btn-primary">
+                        <i class="bi bi-pencil d-none d-sm-block d-md-inline"></i> Edit
+                    </a>
+                    <button class="btn btn-outline-danger btn-delete" data-val-id="@item.Id" data-val-name="@item.Name" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <i class="bi bi-trash d-none d-sm-block d-md-inline"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        }
+        
+    </table>
+
+    <br />
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sort = ViewBag.Sort, filterName = ViewBag.FilterName, filterType = ViewBag.FilterType }),
+                new PagedListRenderOptions()
+                {
+                    LiElementClasses = new List<string> { "page-item" },
+                    UlElementClasses = new List<string> { "pagination", "justify-content-center" },
+                    MaximumPageNumbersToDisplay = 5,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers=false,
+                    FunctionToTransformEachPageLink = (li, a) =>
+                    {
+                        a.AddCssClass("page-link");
+                        li.InnerHtml = a.ToString();
+                        return li;
+
+                    }
+                })
+    }
+    else{<p>No pets found</p> }
+</section>
+
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title fs-5 h1" id="deleteModalLabel">
+                    <i class="bi bi-trash"></i> 
+                    Are you sure you want to delete this pet?
+                </p>
+                <button type="button" class="btn-close btn-delete-cancel" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-primary btn-delete-confirm">Yes</button>
+                <button type="button" class="btn btn-secondary btn-delete-cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

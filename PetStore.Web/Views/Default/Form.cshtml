@@ -1,0 +1,23 @@
+﻿@model PetStore.Core.Domain.Pet
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.Id)
+<div class="form-group my-2">
+    @Html.Label("Name", htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+</div>
+
+<div class="form-group my-2">
+    @Html.Label("Date of Birth", htmlAttributes: new { @class = "control-label" })
+    @Html.TextBoxFor(model => model.DateOfBirth, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", required = "required", min = DateTime.UtcNow.AddYears(-20).ToString("yyyy-MM-dd"), max = DateTime.UtcNow.ToString("yyyy-MM-dd") })
+</div>
+
+<div class="form-group my-2">
+    @Html.Label("Weight", htmlAttributes: new { @class = "control-label" })
+    @Html.TextBoxFor(model => model.Weight, "{0:0.00}", new { @class = "form-control", @type = "number", required = "required", pattern = "^\\d*(\\.\\d{0,2})?$", min = 0, max = 50, step = ".01" })
+</div>
+
+<div class="form-group my-2">
+    @Html.Label("Type", htmlAttributes: new { @class = "control-label" })
+    @Html.DropDownList("Type", EnumHelper.GetSelectList(typeof(PetStore.Core.Domain.PetType)), "Select an option", new { @class = "form-select", required = "required" })
+</div>
