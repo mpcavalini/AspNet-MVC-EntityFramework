@@ -1,5 +1,5 @@
 # PetStore
-Solution using Asp.Net made on MVC architecture with basic desing pattern separated in projects: Core, Service and Web.
+Solution using Asp.Net made on MVC architecture with basic design pattern separated in projects: Core, Service and Web.
 
 Accessible on URL http://petstore.bow-host.com/
 
@@ -8,6 +8,7 @@ Accessible on URL http://petstore.bow-host.com/
 ## Front end
 - Bootstrap
 - JQuery
+- Responsive design
 
 ## Back end
 - Asp.Net
