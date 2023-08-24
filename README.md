@@ -8,6 +8,7 @@ Accessible on URL http://petstore.bow-host.com/
 ## Front end
 - Bootstrap
 - JQuery
+- Responsive design
 
 ## Back end
 - Asp.Net
